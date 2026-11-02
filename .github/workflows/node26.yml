@@ -1,0 +1,23 @@
+
+name: Download Node 26 Image
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Docker image
+        run: docker pull --platform linux/amd64 node:26-bookworm-slim
+
+      - name: Export TAR
+        run: docker save -o node26.tar node:26-bookworm-slim
+
+      - name: Upload TAR
+        uses: actions/upload-artifact@v7
+        with:
+          path: node26.tar
+          archive: false
+          retention-days: 7
